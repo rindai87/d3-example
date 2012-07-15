@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+
+    <script src="../d3/d3.v2.min.js"></script>
+</head>
+
+<body>
+
+    <script type="text/javascript">
+    <!--
+        // d3.jsの基本：body部にpタグを作って文字列を挿入
+        d3.select("body").append("p").text("hello d3.js");
+
+        // 複数のデータに対応するpタグを用意して、それぞれ
+        // 動的に異なる処理を行わせる
+        d3.select("body").selectAll("p")
+            .data([4,8,10,5,15])
+            .enter()
+            .append("p")
+            .text(function(d) { return "I'm number " + d + "!"});
+
+    -->
+    </script>
+    <script type="text/javascript" src="./introduction.js"></script>
+
+</body>
+</html>
