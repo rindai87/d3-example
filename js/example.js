@@ -102,3 +102,68 @@ svg.selectAll("rect")
     .attr("width", function(d,i) {return d.key4;})
     .attr("fill", function(d,i) {return d.key5;});
 
+
+// 7. 棒グラフの作成
+
+// データ
+var dataArr = [
+  {name: "Taro", score: 20},
+  {name: "Jiro", score: 31},
+  {name: "Miki", score: 14},
+  {name: "Yumi", score: 32},
+  {name: "Keiko", score: 45},
+  {name: "Yuji", score: 28},
+  {name: "Toru", score: 19}
+];
+
+// スケール
+// xのスケールはx(0,7), y(0,200)の領域
+// y = 200/7 * x
+var scaleX = d3.scale.linear()
+                .domain([0, dataArr.length]).range([0, 200]);
+// yのスケールはx(0,dataのscoreのmax値), y(0,180)の領域
+// y = 180/max(dataAttr.score) * x
+var scaleY = d3.scale.linear()
+                .domain([0, d3.max(dataArr, function(d) {return d.score})]).range([0,180]);
+
+// canvasの定義
+var svg = addSvgElement("canvas7");
+
+// データの描画
+// 棒グラフ
+svg.selectAll("rect")
+    .data(dataArr)
+    .enter()
+    .append("rect")
+    .attr("x", function(d, i) {return scaleX(i) + 25/dataArr.length;})
+    .attr("y", function(d, i) {return 190 - scaleY(d.score);})
+    .attr("width", function(d, i) {return 150/dataArr.length;})
+    .attr("height", function(d, i) {return scaleY(d.score);})
+    .attr("fill", function(d, i) {return d.score>25 ? "blue" : "red";});
+
+// nameの出力
+svg.selectAll("text.name")
+    .data(dataArr)
+    .enter()
+    .append("text")
+    .attr("x", function(d, i) { return scaleX(i) + 100/dataArr.length; })
+    .attr("y", function(d, i) { return 200; })
+    .attr("text-anchor", "end")
+    .attr("font-weight", "bold")
+    .attr("font-family", "selif")
+    .attr("transform", function(d, i) { return "rotate(90," + (scaleX(i) + 100/dataArr.length) + ",190)";})
+    .text(function(d, i) { return d.name })
+    .attr("fill", "white");
+
+// scoreの出力
+svg.selectAll("text.score")
+    .data(dataArr)
+    .enter()
+    .append("text")
+    .attr("x", function(d, i) { return scaleX(i) + 100/dataArr.length; })
+    .attr("y", function(d, i) { return 210 - scaleY(d.score); })
+    .attr("text-anchor", "middle")
+    .attr("font-weight", "bold")
+    .attr("font-family", "selif")
+    .text(function(d, i) { return d.score; })
+    .attr("fill", "black");
